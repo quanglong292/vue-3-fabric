@@ -1,13 +1,11 @@
-<!-- App.vue -->
 <template>
-  <div class="app-container flex flex-col items-center">
-    <Toolbar />
-    <Canvas />
-  </div>
+  <main>
+    <RouterView />
+  </main>
 </template>
 
 <script setup lang="ts">
-import Toolbar from "./components/Toolbar.vue";
-import Canvas from "./components/Canvas.vue";
-import { defineAsyncComponent } from "vue";
+import { useRoute, RouterView, RouterLink } from "vue-router";
+
+const route = useRoute();
 </script>
