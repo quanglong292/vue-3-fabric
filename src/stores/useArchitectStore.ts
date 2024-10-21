@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
-import { fabric } from "fabric";
 import { ref } from "vue";
+import { Tools } from "@/types/architect.type";
 
 export const useArchitectStore = defineStore("architect-store", () => {
   // State
   const canvasRef = ref<any>(null);
+  const selectingTool = ref<keyof typeof Tools | null>(null);
 
   // Functions
   const drawRoom = () => {};
@@ -12,14 +13,23 @@ export const useArchitectStore = defineStore("architect-store", () => {
   const editFurniture = () => {};
   const saveProcess = () => {};
   const exportPNG = () => {};
+  const selectTool = (name: keyof typeof Tools | null) => {
+    console.log("selectTool", name);
+    
+    selectingTool.value = name;
+  };
+
+  console.log({ store: selectingTool.value });
 
   // Export
   return {
     canvasRef,
+    selectingTool,
     drawRoom,
     putFurniture,
     editFurniture,
     saveProcess,
     exportPNG,
+    selectTool,
   };
 });

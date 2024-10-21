@@ -4,6 +4,14 @@
     "paths": {
       "@/*": ["src/*"]
     },
+    "plugins": [
+      {
+        "name": "@vue/typescript-plugin",
+        "location": "/usr/local/lib/node_modules/@vue/language-server",
+        "languages": ["vue"]
+      }
+    ],
+    "types": ["vite/client"],
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -17,6 +25,8 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "preserve",
+    "noImplicitAny": false,
+    "allowJs": true,
 
     /* Linting */
     "strict": true,
