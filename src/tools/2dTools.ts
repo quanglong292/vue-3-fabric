@@ -1,5 +1,7 @@
 import { fabric } from "fabric";
 
+import chair_svg from "@/assets/furnitures/chair.svg";
+
 const use2DTools = () => {
   let canvas: fabric.Canvas;
 
@@ -50,9 +52,30 @@ const use2DTools = () => {
     canvas.renderAll();
   }
 
+  const addFurnitures = () => {
+    // fabric.loadSVGFromString(chair_svg, (objects, options) => {
+    //   const svgGroup = fabric.util.groupSVGElements(objects, options);
+    //   canvas.add(svgGroup);
+    //   canvas.renderAll();
+    // });
+
+    fetch(chair_svg)
+      .then((response) => response.text()) // Convert the response to text (SVG string)
+      .then((svgString) => {
+        // Load the SVG string into Fabric.js
+        fabric.loadSVGFromString(svgString, (objects, options) => {
+          const svgGroup = fabric.util.groupSVGElements(objects, options);
+          canvas.add(svgGroup);
+          canvas.renderAll();
+        });
+      })
+      .catch((err) => console.error("Failed to load SVG: ", err));
+  };
+
   return {
     addCircle,
     initial,
+    addFurnitures,
   };
 };
 

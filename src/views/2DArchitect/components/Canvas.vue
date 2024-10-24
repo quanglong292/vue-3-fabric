@@ -12,7 +12,7 @@ const canvasRef = ref();
 let canvas: fabric.Canvas;
 
 // Hooks
-const { initial, addCircle } = use2DTools();
+const { initial, addCircle, addFurnitures } = use2DTools();
 
 // Functions
 
@@ -55,6 +55,9 @@ watch(
         break;
       case "circle":
         addCircle();
+        break;
+      case "furniture":
+        addFurnitures();
         break;
       default:
         break;
