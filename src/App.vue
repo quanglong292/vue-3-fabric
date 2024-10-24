@@ -1,8 +1,9 @@
 <template>
   <main>
-    <!-- <RouterView /> -->
+    <RouterView />
     <!-- <Pencil /> -->
-    <Line />
+    <!-- <Line /> -->
+    <!-- <Circle /> -->
   </main>
 </template>
 
@@ -10,6 +11,7 @@
 import { useRoute, RouterView, RouterLink } from "vue-router";
 import Pencil from "./views/Fabric-test/Pencil.vue";
 import Line from "./views/Fabric-test/Line.vue";
+import Circle from "./views/Fabric-test/Circle.vue";
 
 const route = useRoute();
 </script>

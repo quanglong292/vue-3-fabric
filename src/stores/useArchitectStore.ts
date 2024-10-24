@@ -5,8 +5,8 @@ import { Tools } from "@/types/architect.type";
 export const useArchitectStore = defineStore("architect-store", () => {
   // State
   const canvasRef = ref<any>(null);
+  const selectToolCount = ref<number>(0);
   const selectingTool = ref<keyof typeof Tools | null>(null);
-
   // Functions
   const drawRoom = () => {};
   const putFurniture = () => {};
@@ -14,16 +14,15 @@ export const useArchitectStore = defineStore("architect-store", () => {
   const saveProcess = () => {};
   const exportPNG = () => {};
   const selectTool = (name: keyof typeof Tools | null) => {
-    console.log("selectTool", name);
-    
     selectingTool.value = name;
+    selectToolCount.value += 1;
   };
-
-  console.log({ store: selectingTool.value });
 
   // Export
   return {
     canvasRef,
+    selectToolCount,
+    // @ts-ignore
     selectingTool,
     drawRoom,
     putFurniture,

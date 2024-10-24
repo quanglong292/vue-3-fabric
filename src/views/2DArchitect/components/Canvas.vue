@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from "vue";
 import { fabric } from "fabric";
 import { useArchitectStore } from "@/stores/useArchitectStore";
+import use2DTools from "@/tools/2dTools";
 
 // Store
 const store = useArchitectStore();
@@ -10,28 +11,10 @@ const store = useArchitectStore();
 const canvasRef = ref();
 let canvas: fabric.Canvas;
 
+// Hooks
+const { initial, addCircle } = use2DTools();
+
 // Functions
-function addGrid(canvas: any, gridSize = 20) {
-  const width = canvas.width;
-  const height = canvas.height;
-  const gridOptions = {
-    stroke: "#ccc", // grid line color
-    selectable: false, // prevent selection of gridlines
-    evented: false, // don't trigger events on gridlines
-  };
-
-  // Horizontal lines
-  for (let i = 0; i <= height; i += gridSize) {
-    canvas.add(new fabric.Line([0, i, width, i], gridOptions));
-  }
-
-  // Vertical lines
-  for (let i = 0; i <= width; i += gridSize) {
-    canvas.add(new fabric.Line([i, 0, i, height], gridOptions));
-  }
-
-  canvas.renderAll();
-}
 
 function activatePencilMode() {
   canvas.isDrawingMode = true;
@@ -53,25 +36,25 @@ onMounted(() => {
   const refElement = canvasRef.value;
 
   if (refElement) {
-    const { innerHeight, innerWidth } = window;
-
     canvas = new fabric.Canvas(refElement, {});
-    canvas.setHeight(innerHeight);
-    canvas.setWidth(innerWidth);
-    canvas.setBackgroundColor("#f5f5f5", canvas.renderAll.bind(canvas));
-    canvas.selection = false;
-    canvas.defaultCursor = "crosshair";
-
-    addGrid(canvas);
+    initial(canvas);
   }
 });
 
 watch(
-  () => store.selectingTool,
-  (newTool) => {
-    switch (newTool) {
+  () => store.selectToolCount,
+  () => {
+    console.log({
+      count: store.selectToolCount,
+      selecting: store.selectingTool,
+    });
+
+    switch (store.selectingTool) {
       case "draw":
         activatePencilMode();
+        break;
+      case "circle":
+        addCircle();
         break;
       default:
         break;
