@@ -22,7 +22,6 @@ export const useArchitectStore = defineStore("architect-store", () => {
   return {
     canvasRef,
     selectToolCount,
-    // @ts-ignore
     selectingTool,
     drawRoom,
     putFurniture,

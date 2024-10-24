@@ -16,8 +16,6 @@ const use2DTools = () => {
   };
 
   const addCircle = () => {
-    console.log("addCircle");
-
     const circle = new fabric.Circle({
       left: 100, // X-coordinate of the center of the circle
       top: 100, // Y-coordinate of the center of the circle
