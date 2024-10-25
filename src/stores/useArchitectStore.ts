@@ -7,6 +7,8 @@ export const useArchitectStore = defineStore("architect-store", () => {
   const canvasRef = ref<any>(null);
   const selectToolCount = ref<number>(0);
   const selectingTool = ref<keyof typeof Tools | null>(null);
+  const currentFilePath = ref<string | null>(null);
+
   // Functions
   const drawRoom = () => {};
   const putFurniture = () => {};
@@ -23,6 +25,7 @@ export const useArchitectStore = defineStore("architect-store", () => {
     canvasRef,
     selectToolCount,
     selectingTool,
+    currentFilePath,
     drawRoom,
     putFurniture,
     editFurniture,
@@ -31,3 +34,5 @@ export const useArchitectStore = defineStore("architect-store", () => {
     selectTool,
   };
 });
+
+export type TArchitectStore = ReturnType<typeof useArchitectStore>;

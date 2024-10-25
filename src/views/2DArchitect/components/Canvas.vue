@@ -12,10 +12,10 @@ const canvasRef = ref();
 let canvas: fabric.Canvas;
 
 // Hooks
-const { initial, addCircle, addFurnitures } = use2DTools();
+const { initial, addCircle, addFurnitures, saveFile, openFile } =
+  use2DTools(store);
 
 // Functions
-
 function activatePencilMode() {
   canvas.isDrawingMode = true;
   const pencilBrush = new fabric.PencilBrush(canvas);
@@ -44,11 +44,6 @@ onMounted(() => {
 watch(
   () => store.selectToolCount,
   () => {
-    console.log({
-      count: store.selectToolCount,
-      selecting: store.selectingTool,
-    });
-
     switch (store.selectingTool) {
       case "draw":
         activatePencilMode();
@@ -58,6 +53,12 @@ watch(
         break;
       case "furniture":
         addFurnitures();
+        break;
+      case "save":
+        saveFile();
+        break;
+      case "import_file":
+        openFile();
         break;
       default:
         break;

@@ -1,9 +1,11 @@
 import { fabric } from "fabric";
 
 import chair_svg from "@/assets/furnitures/chair.svg";
+import { TArchitectStore } from "@/stores/useArchitectStore";
 
-const use2DTools = () => {
+const use2DTools = (store: TArchitectStore) => {
   let canvas: fabric.Canvas;
+  const currentFilePath = store.currentFilePath;
 
   // Functions
   const initial = (canvasRef: fabric.Canvas) => {
@@ -72,10 +74,82 @@ const use2DTools = () => {
       .catch((err) => console.error("Failed to load SVG: ", err));
   };
 
+  const saveFile = async () => {
+    if (!canvas) return;
+
+    const jsonData = canvas.toJSON();
+
+    try {
+      if (currentFilePath) {
+        // Save to existing file path
+        const fileHandle = await window.showSaveFilePicker({
+          suggestedName: currentFilePath,
+          types: [
+            {
+              description: "JSON file",
+              accept: { "application/json": [".json"] },
+            },
+          ],
+        });
+        const writable = await fileHandle.createWritable();
+        await writable.write(JSON.stringify(jsonData));
+        await writable.close();
+      } else {
+        // Save as new file
+        const newFileHandle = await window.showSaveFilePicker({
+          suggestedName: "architecture.json",
+          types: [
+            {
+              description: "JSON file",
+              accept: { "application/json": [".json"] },
+            },
+          ],
+        });
+        const writable = await newFileHandle.createWritable();
+        await writable.write(JSON.stringify(jsonData));
+        await writable.close();
+
+        // Update current file path
+        store.currentFilePath = newFileHandle.name;
+      }
+    } catch (error) {
+      console.error("Error saving file:", error);
+    }
+  };
+
+  const openFile = async () => {
+    try {
+      // Open file picker
+      const [fileHandle] = await window.showOpenFilePicker({
+        types: [
+          {
+            description: "JSON file",
+            accept: { "application/json": [".json"] },
+          },
+        ],
+      });
+
+      const file = await fileHandle.getFile();
+      const fileContent = await file.text();
+
+      const jsonData = JSON.parse(fileContent);
+
+      // Load JSON data into Fabric.js canvas
+      canvas?.loadFromJSON(jsonData, canvas.renderAll.bind(canvas));
+
+      // Update the current file path (optional)
+      store.currentFilePath = fileHandle.name;
+    } catch (error) {
+      console.error("Error importing file:", error);
+    }
+  };
+
   return {
     addCircle,
     initial,
     addFurnitures,
+    saveFile,
+    openFile,
   };
 };
 

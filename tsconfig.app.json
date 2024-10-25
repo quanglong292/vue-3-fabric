@@ -11,7 +11,7 @@
         "languages": ["vue"]
       }
     ],
-    "types": ["vite/client"],
+    "types": ["vite/client", "@types/wicg-file-system-access"],
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
