@@ -5,18 +5,28 @@ import { TArchitectStore } from "@/stores/useArchitectStore";
 
 const use2DTools = (store: TArchitectStore) => {
   let canvas: fabric.Canvas;
+  let elementRef: HTMLCanvasElement;
   const currentFilePath = store.currentFilePath;
 
+  let zoomLevel = 1;
+
   // Functions
-  const initial = (canvasRef: fabric.Canvas) => {
+  const initial = (
+    canvasRef: fabric.Canvas,
+    refElement: string | HTMLCanvasElement | null
+  ) => {
     canvas = canvasRef;
+    if (refElement) elementRef = refElement;
     const { innerHeight, innerWidth } = window;
-    canvas.setHeight(innerHeight);
-    canvas.setWidth(innerWidth);
+    canvas.setHeight(innerHeight - 40);
+    canvas.setWidth(innerWidth - 40);
     canvas.setBackgroundColor("#f5f5f5", canvas.renderAll.bind(canvas));
     canvas.selection = true;
     canvas.defaultCursor = "crosshair";
     addGrid(canvas);
+    setTimeout(() => {
+      addZoomHandler(canvas);
+    }, 0);
   };
 
   const addCircle = () => {
@@ -141,6 +151,32 @@ const use2DTools = (store: TArchitectStore) => {
       store.currentFilePath = fileHandle.name;
     } catch (error) {
       console.error("Error importing file:", error);
+    }
+  };
+
+  const addZoomHandler = (canvas) => {
+    console.log(
+      "addZoomHandler",
+      document.getElementsByClassName("canvas-container")
+    );
+    const element = document.getElementsByClassName("canvas-container")[0];
+
+    if (element) {
+      element.addEventListener("wheel", (event) => {
+        if (event.ctrlKey) {
+          // console.log("wheel", event);
+
+          const zoomStep = 0.1;
+          if (event.deltaY < 0 && zoomLevel <= 2) {
+            zoomLevel += zoomStep;
+          } else {
+            zoomLevel = Math.max(zoomLevel - zoomStep, 0.5);
+          }
+          console.log(zoomLevel);
+
+          // canvas.setZoom(zoomLevel);
+        }
+      });
     }
   };
 

@@ -8,7 +8,7 @@ import use2DTools from "@/tools/2dTools";
 const store = useArchitectStore();
 
 // State
-const canvasRef = ref();
+const canvasRef = ref<string | HTMLCanvasElement | null>();
 let canvas: fabric.Canvas;
 
 // Hooks
@@ -37,7 +37,9 @@ onMounted(() => {
 
   if (refElement) {
     canvas = new fabric.Canvas(refElement, {});
-    initial(canvas);
+    initial(canvas, refElement);
+
+    // TO-DO: Handle scale by using `transform: scale`
   }
 });
 
@@ -68,7 +70,9 @@ watch(
 );
 </script>
 <template>
-  <canvas ref="canvasRef" class="w-full h-full border-2 border-red-600" />
+  <div class="p-4 w-full h-full">
+    <canvas ref="canvasRef" class="w-full h-full border-2 border-red-600" />
+  </div>
 </template>
 
 <style scoped></style>
